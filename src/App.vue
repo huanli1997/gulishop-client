@@ -20,7 +20,17 @@ export default {
     Header,
     Footer,
   },
+  mounted() {
+    // 优化typeNav数据ajax请求次数
+    this.getCategoryList();
+  },
 
+  methods: {
+    // 优化typeNav数据ajax请求次数
+    getCategoryList() {
+      this.$store.dispatch("getCategoryList");
+    },
+  },
 };
 </script>
 

@@ -5,7 +5,7 @@
     <Recommend></Recommend>
     <Rank></Rank>
     <Like></Like>
-    <Floor></Floor>
+    <Floor v-for="floor in floorList" :key="floor.id" :floor="floor"></Floor>
     <Brand></Brand>
   </div>
 </template>
@@ -19,6 +19,8 @@ import Like from "./Like";
 import Floor from "./Floor";
 import Brand from "./Brand";
 
+import { mapState } from "vuex";
+
 export default {
   name: "Home",
   components: {
@@ -28,7 +30,16 @@ export default {
     Rank,
     Like,
     Floor,
-    Brand
+    Brand,
+  },
+  // 因为floor的数据被使用了两次，使用定义在父组件中，就只要请求一次
+  mounted() {
+    this.$store.dispatch("getFloorList");
+  },
+  computed: {
+    ...mapState({
+      floorList: (state) => state.home.floorList,
+    }),
   },
 };
 </script>

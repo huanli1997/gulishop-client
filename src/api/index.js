@@ -1,6 +1,7 @@
 // 这个文件是所有接口请求函数的文件
 // 每一个请求接口数据功能都给它定义成一个函数，以后哪里需要去请求数据，就调用对应的这个接口请求函数就好了
 import Ajax from "@/ajax/Ajax"; // 暴露出来二次封装的instance
+import mockAjax from "@/ajax/mockAjax"; // 封装的发送 mock 请求的函数
 
 // 首页三级分类
 export const reqCategoryList = () => {
@@ -11,3 +12,19 @@ export const reqCategoryList = () => {
 };
 
 // reqCategoryList(); 测试进度条
+
+// banner
+export const reqBannerList = () => {
+  return mockAjax({
+    url: "/banner",
+    method: "get",
+  });
+};
+
+// floor
+export const reqFloorList = () => {
+  return mockAjax({
+    url: "/floor",
+    method: "get",
+  });
+};

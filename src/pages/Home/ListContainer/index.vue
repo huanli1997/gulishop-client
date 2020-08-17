@@ -3,11 +3,15 @@
     <div class="sortList clearfix">
       <div class="center">
         <!--banner轮播-->
-        <div class="swiper-container" id="mySwiper">
+        <!-- <div class="swiper-container" ref="banner">
           <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <img src="./images/banner1.jpg" />
-            </div>
+            <div
+              class="swiper-slide"
+              v-for="banner in bannerList"
+              :key="banner.id"
+            >
+              <img :src="banner.imgUrl" />
+            </div> -->
             <!-- <div class="swiper-slide">
               <img src="./images/banner2.jpg" />
             </div>
@@ -17,14 +21,15 @@
             <div class="swiper-slide">
               <img src="./images/banner4.jpg" />
             </div> -->
-          </div>
+          <!-- </div> -->
           <!-- 如果需要分页器 -->
-          <div class="swiper-pagination"></div>
+          <!-- <div class="swiper-pagination"></div> -->
 
           <!-- 如果需要导航按钮 -->
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
-        </div>
+          <!-- <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div> -->
+          <SliderLoop :bannerList="bannerList"></SliderLoop>
+        <!-- </div> -->
       </div>
       <div class="right">
         <div class="news">
@@ -100,8 +105,63 @@
 </template>
 
 <script>
+// import Swiper from "swiper"; // 轮播图 js
+// import "swiper/css/swiper.css"; // 轮播图 css css文件不需要使用变量接收，直接引入
+import { mapState } from "vuex";
 export default {
   name: "ListContainer",
+  mounted() {
+    this.getBannerList();
+  },
+  methods: {
+    getBannerList() {
+      this.$store.dispatch("getBannerList");
+    },
+  },
+  computed: {
+    ...mapState({
+      bannerList: (state) => state.home.bannerList,
+    }),
+  },
+  /*
+    因为banner是由后台数据自动生成的，所以要在数据都返回完成后，DOM生成才能使用swiper
+    swiper创建的时间应该是在页面列表创建之后才会有效果
+    所以不能放在mounted和created，因为请求是后来才发过去的
+    也不能放在updated()，因为updated会触发n词，数据发生改变就生成新的swiper
+    watch + nextTick
+   */
+  // watch: {
+  //   bannerList: {
+  //     immediate: true, // 为了配合floor组件 抽取公共部分
+  //     handler(newVal, oldVal) {
+  //       // Vue.nextTick() 和 vm.$nextTick() 效果一样
+  //       // 当数据最后一次更新完成后，触发里面的回调函数
+  //       this.$nextTick(() => {
+  //         // 轮播图
+  //         new Swiper(this.$refs.banner, {
+  //           loop: true, // 循环模式选项
+
+  //           // 如果需要分页器
+  //           // 下面的小圆点
+  //           pagination: {
+  //             el: ".swiper-pagination",
+  //             clickable: true, // 小圆点点击
+  //           },
+
+  //           // 如果需要前进后退按钮
+  //           navigation: {
+  //             nextEl: ".swiper-button-next",
+  //             prevEl: ".swiper-button-prev",
+  //           },
+  //           // 自动轮播
+  //           autoplay: {
+  //             disableOnInteraction: false, // 用户操作后，还可自动切换
+  //           },
+  //         });
+  //       });
+  //     },
+  //   },
+  // },
 };
 </script>
 

@@ -214,7 +214,7 @@ export default {
         .dataset 获取自定义属性集合对象
       */
       const data = event.target.dataset;
-      // 结构data
+      // 解构data
       const { categoryname, category1id, category2id, category3id } = data;
       // 如果有categoryname数据说明点击的是a标签
       if (categoryname) {
@@ -223,15 +223,15 @@ export default {
           name: "search",
         };
         const query = {
-          categoryname: categoryname,
+          categoryName: categoryname,
         };
         //  判断是几级菜单
         if (category1id) {
-          query.category1id = category1id;
+          query.category1Id = category1id;
         } else if (category2id) {
-          query.category2id = category2id;
+          query.category2Id = category2id;
         } else {
-          query.category3id = category3id;
+          query.category3Id = category3id;
         }
         location.query = query;
         // 判断是否有params参数

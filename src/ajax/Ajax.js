@@ -1,9 +1,10 @@
 // 引入axios
-import axios from 'axios'
+import axios from "axios";
 // 下载 npm install --save nprogress
 // 引入NProgress 进度条
-import NProgress from 'nprogress'
-import 'nprogress/nprogress.css'
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
+import store from "@/store"; // 为了使用userTempId
 
 // 二次封装axios
 // 1.配置基础路径和超时限制
@@ -14,9 +15,13 @@ const instance = axios.create({
 
 // 请求拦截器
 instance.interceptors.request.use((config) => {
+  // 在发送请求之前，做一些事
+  //把用户的临时身份标识添加到每次请求的请求头当中
+  let userTempId = store.state.user.userTempId;
+  config.headers.userTempId = userTempId;
+
   // 进度条开始
   NProgress.start();
-  // 在发送请求之前，做一些事
   return config;
 });
 

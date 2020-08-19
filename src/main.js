@@ -16,6 +16,8 @@ import SliderLoop from "@/components/SliderLoop";
 
 import Pagination from "@/components/Pagination";
 
+import "swiper/css/swiper.css"; // 轮播图 css css文件不需要使用变量接收，直接引入
+
 Vue.config.performance = false;
 
 // 全局注册组件

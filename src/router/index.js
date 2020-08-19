@@ -36,6 +36,7 @@ VueRouter.prototype.replace = function(location, onResolved, onReject) {
 const router = new VueRouter({
   // mode:"hash" // hash 模式  history 模式
   routes,
+  // 控制跳转过去之后滚动的位置在什么地方
   scrollBehavior(to, from, savedPosition) {
     return { x: 0, y: 0 };
   },

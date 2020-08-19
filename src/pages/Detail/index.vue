@@ -16,9 +16,9 @@
         <!-- 左侧放大镜区域 -->
         <div class="previewWrap">
           <!--放大镜效果-->
-          <Zoom />
+          <Zoom :imageList="imageList" />
           <!-- 小图列表 -->
-          <ImageList />
+          <ImageList :imageList="imageList" />
         </div>
         <!-- 右侧选择区域布局 -->
         <div class="InfoWrap">
@@ -85,9 +85,15 @@
                 </dt>
                 <dd
                   changepirce="0"
-                  class="active"
+                  :class="{ active: spuSaleAttrValue.isChecked === 1 }"
                   v-for="spuSaleAttrValue in spuSaleAttr.spuSaleAttrValueList"
                   :key="spuSaleAttrValue.id"
+                  @click="
+                    changeIsChecked(
+                      spuSaleAttr.spuSaleAttrValueList,
+                      spuSaleAttrValue
+                    )
+                  "
                 >
                   {{ spuSaleAttrValue.saleAttrValueName }}
                 </dd>
@@ -95,12 +101,17 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" />
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input autocomplete="off" class="itxt" v-model="skuNum" />
+                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                <a
+                  href="javascript:"
+                  class="mins"
+                  @click="skuNum > 1 ? skuNum-- : (skuNum = 1)"
+                  >-</a
+                >
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a href="javascript:" @click="getAddOrUpdateCart">加入购物车</a>
               </div>
             </div>
           </div>
@@ -358,6 +369,12 @@ import { mapGetters } from "vuex";
 export default {
   name: "Detail",
 
+  data() {
+    return {
+      skuNum: 1,
+    };
+  },
+
   components: {
     ImageList,
     Zoom,
@@ -372,9 +389,52 @@ export default {
     getGoodsDetailInfo() {
       this.$store.dispatch("getGoodsDetailInfo", this.$route.params.skuId);
     },
+
+    // 选择属性 排他思想
+    changeIsChecked(saleAttrValueList, saleAttrValue) {
+      saleAttrValueList.forEach((item) => {
+        item.isChecked = 0;
+      });
+      saleAttrValue.isChecked = 1;
+    },
+
+    // 添加商品到购物车
+    async getAddOrUpdateCart() {
+      /* 
+        先发请求给后台添加购物车
+        后台添加成功后返回结果
+       */
+      try {
+        // 返回的结果是成功的
+        await this.$store.dispatch("getAddOrUpdateCart", {
+          skuId: this.skuInfo.id,
+          skuNum: this.skuNum,
+        });
+
+        // 弹出提示
+        alert("加入购物车成功，即将跳转到结算页面");
+
+        // 跳转到AddCartSuccess
+        /* 
+           成功页面需要数量，我们可以通过query参数带过去
+           同时还需要商品信息，一般比较大型的数据我们采取WebStorage（localStorage 永久存储/sessionStorage 会话（临时）存储）
+        */
+        // 携带商品信息
+        sessionStorage.setItem("SKUINFO_KEY", JSON.stringify(this.skuInfo));
+
+        // 页面跳转 携带query参数带过去
+        this.$router.push("/addCartSuccess/?skuNum=" + this.skuNum);
+      } catch (error) {
+        // 返回的结果是失败的
+        alert(error.message);
+      }
+    },
   },
   computed: {
     ...mapGetters(["categoryView", "skuInfo", "spuSaleAttrList"]),
+    imageList() {
+      return this.skuInfo.skuImageList || [];
+    },
   },
 };
 </script>

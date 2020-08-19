@@ -50,3 +50,23 @@ export const reqGoodsDetailInfo = (skuId) => {
   });
 };
 // reqGoodsDetailInfo(126);
+
+// 请求添加或者修改购物车（或者修改购物车数量）
+// /api/cart/addToCart/{ skuId }/{ skuNum } post
+export const reqAddOrUpdateCart = (skuId, skuNum) => {
+  return Ajax({
+    url: `/cart/addToCart/${skuId}/${skuNum}`,
+    method: "post",
+  });
+};
+// reqAddOrUpdateCart(112, 1);
+
+// 获取购物车列表
+// /api/cart/cartList  get
+export const reqShopCartList = () => {
+  return Ajax({
+    url: "/cart/cartList",
+    method: "get",
+  });
+};
+// reqShopCartList();

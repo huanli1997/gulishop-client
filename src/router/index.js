@@ -36,6 +36,9 @@ VueRouter.prototype.replace = function(location, onResolved, onReject) {
 const router = new VueRouter({
   // mode:"hash" // hash 模式  history 模式
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    return { x: 0, y: 0 };
+  },
 });
 
 // 暴露路由器

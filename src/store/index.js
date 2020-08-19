@@ -5,12 +5,13 @@ Vue.use(Vuex);
 
 import home from "./home";
 import user from "./user";
+import search from "./search";
+import detail from "./detail";
 
 const state = {};
 const getters = {};
 const mutations = {};
-const actions={}
-
+const actions = {};
 
 export default new Vuex.Store({
   state,
@@ -20,5 +21,7 @@ export default new Vuex.Store({
   modules: {
     home,
     user,
+    search,
+    detail,
   },
 });

@@ -14,12 +14,16 @@ import "@/api";
 // reqCategoryList()
 import SliderLoop from "@/components/SliderLoop";
 
+import Pagination from "@/components/Pagination";
+
 Vue.config.performance = false;
 
 // 全局注册组件
 Vue.component("TypeNav", TypeNav);
 // 轮播图
 Vue.component("SliderLoop", SliderLoop);
+// 分页导航
+Vue.component("Pagination", Pagination);
 
 // 组件：1.定义组件 2.注册 3使用
 new Vue({
@@ -31,4 +35,7 @@ new Vue({
   //   App,
   // },
   // template: "<App/>",
+  beforeCreate() {
+    Vue.prototype.$bus = this; // 设置全局事件总线
+  },
 });

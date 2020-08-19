@@ -3,6 +3,7 @@ import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Search from "@/pages/Search";
+import Detail from "@/pages/Detail";
 
 // 专门放置路由的地方
 export default [
@@ -37,6 +38,12 @@ export default [
     //   return { keyword: route.params.keyword, keyword2: route.query.keyword };
     // },
   },
+
+  {
+    path: "/detail/:skuId", // 详情页面 : 后面 params 参数   :skuId? ?表示可以传可以不传
+    component: Detail,
+  },
+
   // 重定向
   {
     path: "/",

@@ -239,7 +239,12 @@ export default {
           location.params = this.$route.params;
         }
         // 编程式导航，传入location参数
-        this.$router.push(location);
+        // this.$router.push(location);
+        if (this.$route.path !== "/home") {
+          this.$router.replace(location); //对象
+        } else {
+          this.$router.push(location); //对象
+        }
       }
     },
 

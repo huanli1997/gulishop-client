@@ -28,3 +28,25 @@ export const reqFloorList = () => {
     method: "get",
   });
 };
+
+// searchParams代表搜索参数，这个参数必须有，至少得是一个没有属性的空对象
+// 参数如果是一个空对象，代表搜索请求获取的是全部的数据
+// 参数如果有搜索条件，代表获取的就是搜索条件匹配的数据
+export const reqGoodsListInfo = (searchParams) => {
+  return Ajax({
+    url: "/list",
+    method: "post",
+    data: searchParams,
+  });
+};
+// reqGoodsListInfo({});
+
+// 详情页面
+// /api/item/{ skuId } GET
+export const reqGoodsDetailInfo = (skuId) => {
+  return Ajax({
+    url: `item/${skuId}`,
+    method: "get",
+  });
+};
+// reqGoodsDetailInfo(126);

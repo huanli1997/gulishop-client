@@ -65,6 +65,9 @@ export default {
       keyword: "",
     };
   },
+  mounted() {
+    this.$bus.$on("clearKeyword", this.clearKeyword);
+  },
   methods: {
     toSearch() {
       /*
@@ -89,12 +92,24 @@ export default {
           keyword: this.keyword || undefined,
         },
       };
-
       // 判断是否有query参数
       if (this.$route.query) {
         location.query = this.$route.query;
       }
-      this.$router.push(location);
+
+      /*
+        如果是搜索页往搜索页去跳转使用replace
+        如果是home页往搜索页去跳转使用push
+      */
+      if (this.$route.path !== "/home") {
+        this.$router.replace(location);
+      } else {
+        this.$router.push(location);
+      }
+    },
+    // 清除搜索关键字
+    clearKeyword() {
+      this.keyword = "";
     },
   },
 };

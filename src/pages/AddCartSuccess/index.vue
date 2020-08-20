@@ -31,7 +31,7 @@ export default {
   data() {
     return {
       // 取出商品详情传递过来的数据
-      skuInfo: JSON.parse(sessionStorage.getItem("SKUINFO_KEY")),
+      skuInfo: JSON.parse(sessionStorage.getItem("SKUINFO_KEY")) || {},
     };
   },
 };

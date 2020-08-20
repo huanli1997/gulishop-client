@@ -27,9 +27,10 @@ export default {
     changeDefaultIndex(index) {
       this.defaultIndex = index;
     },
-
+    
     move(event) {
       // 获取蒙板元素
+
       let mask = this.$refs.mask;
       let bigImg = this.$refs.bigImg;
       /*

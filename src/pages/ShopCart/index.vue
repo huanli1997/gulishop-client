@@ -11,35 +11,52 @@
         <div class="cart-th6">操作</div>
       </div>
       <div class="cart-body">
-        <ul class="cart-list" v-for="shop in shopCartList" :key="shop.id">
+        <ul class="cart-list" v-for="cart in shopCartList" :key="cart.id">
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" />
+            <input
+              type="checkbox"
+              name="chk_list"
+              :checked="cart.isChecked === 1"
+              @click="updateOne(cart)"
+            />
           </li>
           <li class="cart-list-con2">
-            <img :src="shop.imgUrl" />
+            <img :src="cart.imgUrl" />
             <div class="item-msg">
-              {{ shop.skuName }}
+              {{ cart.skuName }}
             </div>
           </li>
           <li class="cart-list-con4">
-            <span class="price">{{ shop.skuPrice }}</span>
+            <span class="price">{{ cart.skuPrice }}</span>
           </li>
           <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins">-</a>
+            <a
+              href="javascript:void(0)"
+              class="mins"
+              @click="updateCartNum(cart, -1)"
+              >-</a
+            >
+            <!-- 当数据变化时，获取到当前输入框的值 -->
             <input
               autocomplete="off"
               type="text"
-              :value="shop.skuNum"
+              :value="cart.skuNum"
               minnum="1"
               class="itxt"
+              @change="updateCartNum(cart, $event.target.value * 1)"
             />
-            <a href="javascript:void(0)" class="plus">+</a>
+            <a
+              href="javascript:void(0)"
+              class="plus"
+              @click="updateCartNum(cart, +1)"
+              >+</a
+            >
           </li>
           <li class="cart-list-con6">
-            <span class="sum">{{ shop.skuPrice * shop.skuNum }}</span>
+            <span class="sum">{{ cart.skuPrice * cart.skuNum }}</span>
           </li>
           <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
+            <a href="#none" class="sindelet" @click="deleteOne(cart)">删除</a>
             <br />
             <a href="#none">移到收藏</a>
           </li>
@@ -48,19 +65,21 @@
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox" />
+        <input class="chooseAll" type="checkbox" v-model="isCheckAll" />
         <span>全选</span>
       </div>
       <div class="option">
-        <a href="#none">删除选中的商品</a>
+        <a href="javascript:;" @click="deleteAll">删除选中的商品</a>
         <a href="#none">移到我的关注</a>
         <a href="#none">清除下柜商品</a>
       </div>
       <div class="money-box">
-        <div class="chosed">已选择 <span>0</span>件商品</div>
+        <div class="chosed">
+          已选择 <span>{{ checkNum }}</span> 件商品
+        </div>
         <div class="sumprice">
           <em>总价（不含运费） ：</em>
-          <i class="summoney">0</i>
+          <i class="summoney"> {{ allMoney }} </i>
         </div>
         <div class="sumbtn">
           <a class="sum-btn" href="###" target="_blank">结算</a>
@@ -81,11 +100,114 @@ export default {
     getShopCartList() {
       this.$store.dispatch("getShopCartList");
     },
+
+    // 改变的数量
+    async updateCartNum(cart, disNum) {
+      // disNum 和原来的数量加起来小于1，就要对disNum修正
+      // 相当于 disNum + cart.skuNum 最小等于 1
+      if (cart.skuNum + disNum < 1 || disNum === 0) {
+        disNum = 1 - cart.skuNum;
+        cart.skuNum = 1;
+      }
+
+      try {
+        // 发送请求
+        await this.$store.dispatch("getAddOrUpdateCart", {
+          skuId: cart.skuId,
+          skuNum: disNum,
+        });
+
+        // 发送请求，更新最新商品列表
+        this.getShopCartList();
+      } catch (error) {
+        alert(error.message);
+      }
+    },
+
+    // 切换单个商品选中状态
+    async updateOne(cart) {
+      try {
+        // 发请求更新选中状态
+        await this.$store.dispatch("updateIsCheck", {
+          skuId: cart.skuId,
+          isChecked: cart.isChecked === 1 ? 0 : 1,
+        });
+        // 发送请求，更新最新商品列表
+        this.getShopCartList();
+      } catch (error) {
+        alert(error.message);
+      }
+    },
+
+    // 删除单个商品
+    async deleteOne(cart) {
+      try {
+        // 发请求更新选中状态
+        await this.$store.dispatch("deleteCart", cart.skuId);
+        // 发送请求，更新最新商品列表
+        this.getShopCartList();
+      } catch (error) {
+        alert(error.message);
+      }
+    },
+    // 删除多个商品
+    async deleteAll() {
+     try {
+        // 发请求删除商品
+      this.$store.dispatch("deleteAllCheckCart");
+      // 发送请求，更新最新商品列表
+      this.getShopCartList();
+     } catch (error) {
+       alert(error.messages)
+     }
+    },
   },
   computed: {
     ...mapState({
       shopCartList: (state) => state.shopcart.shopCartList,
     }),
+
+    // 全选
+    isCheckAll: {
+      get() {
+        // 只有当所以商品都被选中时并且商品数量大于0时全选勾选
+        return (
+          this.shopCartList.every((item) => item.isChecked === 1) &&
+          this.shopCartList.length > 0
+        );
+      },
+      async set(val) {
+        try {
+          //我们要让所有的人都去修改状态val对应的状态 val如果是true ===》 1   如果是false ===> 0
+          await this.$store.dispatch("updateAllIsCheck", val ? 1 : 0);
+          this.getShopCartList();
+        } catch (error) {
+          alert(error.message);
+        }
+      },
+    },
+
+    // 选中的总数
+    checkNum() {
+      return this.shopCartList.reduce((pre, item) => {
+        // 当被选中时，才计算进总数
+        if (item.isChecked === 1) {
+          pre += item.skuNum;
+        }
+        return pre;
+      }, 0);
+    },
+
+    // 选中的总价
+    allMoney() {
+      return this.shopCartList.reduce((pre, item) => {
+        // 当被选中时，才计算进总数
+        if (item.isChecked === 1) {
+          pre += item.skuNum * item.skuPrice;
+        }
+        return pre;
+      }, 0);
+    },
   },
 };
 </script>

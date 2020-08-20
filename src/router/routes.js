@@ -7,6 +7,7 @@ import Detail from "@/pages/Detail";
 import AddCartSuccess from "@/pages/AddCartSuccess";
 import ShopCart from "@/pages/ShopCart";
 
+
 // 专门放置路由的地方
 export default [
   {
@@ -54,6 +55,7 @@ export default [
     path: "/ShopCart", // 添加购物车列表
     component: ShopCart,
   },
+
   // 重定向
   {
     path: "/",

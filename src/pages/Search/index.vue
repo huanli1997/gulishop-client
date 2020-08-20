@@ -211,7 +211,7 @@ export default {
 
     // // 新建一个局部变量searchParams
     // const searchParams = {
-    //   ...searchParams, // 对searchParams进行拆包
+    //   ...this.searchParams, // 对searchParams进行拆包
     //   keyword,
     //   category1Id,
     //   category2Id,
@@ -245,8 +245,8 @@ export default {
     },
     // 处理搜索参数
     handleSearchParams() {
-      const { keyword } = this.$route.params;
-      const {
+      let { keyword } = this.$route.params;
+      let {
         category1Id,
         category2Id,
         category3Id,
@@ -254,7 +254,7 @@ export default {
       } = this.$route.query;
 
       // 新建一个局部变量searchParams
-      const searchParams = {
+      let searchParams = {
         ...this.searchParams, // 对searchParams进行拆包
         keyword,
         category1Id,
@@ -366,8 +366,8 @@ export default {
       // const originOrderType = this.searchParams.order.split(":")[1];
 
       // 优化后
-      const originOrderFlag = this.orderFlag;
-      const originOrderType = this.orderType;
+      let originOrderFlag = this.orderFlag;
+      let originOrderType = this.orderType;
       let newOrder = "";
       if (orderFlag === originOrderFlag) {
         // 判断点击的是否是当前排序项

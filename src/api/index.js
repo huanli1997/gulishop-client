@@ -70,3 +70,31 @@ export const reqShopCartList = () => {
   });
 };
 // reqShopCartList();
+
+// 切换商品选中状态
+// /api/cart/checkCart/{skuID}/{isChecked}  GET
+export const reqUpdateIsCheck = (skuId, isChecked) => {
+  return Ajax({
+    url: `/cart/checkCart/${skuId}/${isChecked}`,
+    method: "get",
+  });
+};
+
+// 删除购物车数据
+// /api/cart/deleteCart/{skuId}  DELETE
+export const reqDeleteCart = (skuId) => {
+  return Ajax({
+    url: `/cart/deleteCart/${skuId}`,
+    method: "delete",
+  });
+};
+
+// 注册
+// /api/user/passport/register POST
+export const reqRegister = (userInfo) => {
+  return Ajax({
+    url: `/user/passport/register`,
+    method: "post",
+    data: userInfo,
+  });
+};

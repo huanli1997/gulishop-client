@@ -105,6 +105,7 @@ export default {
     async updateCartNum(cart, disNum) {
       // disNum 和原来的数量加起来小于1，就要对disNum修正
       // 相当于 disNum + cart.skuNum 最小等于 1
+
       if (cart.skuNum + disNum < 1 || disNum === 0) {
         disNum = 1 - cart.skuNum;
         cart.skuNum = 1;
@@ -152,14 +153,14 @@ export default {
     },
     // 删除多个商品
     async deleteAll() {
-     try {
+      try {
         // 发请求删除商品
-      this.$store.dispatch("deleteAllCheckCart");
-      // 发送请求，更新最新商品列表
-      this.getShopCartList();
-     } catch (error) {
-       alert(error.messages)
-     }
+        this.$store.dispatch("deleteAllCheckCart");
+        // 发送请求，更新最新商品列表
+        this.getShopCartList();
+      } catch (error) {
+        alert(error.messages);
+      }
     },
   },
   computed: {

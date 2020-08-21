@@ -98,3 +98,22 @@ export const reqRegister = (userInfo) => {
     data: userInfo,
   });
 };
+
+// 登录
+// /api/user/passport/login POST
+export const reqLogin = (userInfo) => {
+  return Ajax({
+    url: "/user/passport/login",
+    method: "post",
+    data: userInfo,
+  });
+};
+
+// 退出登录
+// /api/user/passport/logout GET
+export const reqLogout = () => {
+  return Ajax({
+    url: "/user/passport/logout",
+    method: "get",
+  });
+};

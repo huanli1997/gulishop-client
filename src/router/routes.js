@@ -6,7 +6,10 @@ import Search from "@/pages/Search";
 import Detail from "@/pages/Detail";
 import AddCartSuccess from "@/pages/AddCartSuccess";
 import ShopCart from "@/pages/ShopCart";
-
+import Trade from "@/pages/Trade";
+import Pay from "@/pages/Pay";
+import PaySuccess from "@/pages/PaySuccess";
+import Center from "@/pages/Center";
 
 // 专门放置路由的地方
 export default [
@@ -54,6 +57,27 @@ export default [
   {
     path: "/ShopCart", // 添加购物车列表
     component: ShopCart,
+  },
+  {
+    path: "/trade", // 订单
+    component: Trade,
+  },
+  {
+    path: "/trade", // 订单
+    component: Trade,
+  },
+  {
+    path: "/pay", // 支付页面
+    component: Pay,
+  },
+  {
+    path: "/paysuccess", // 支付成功
+    component: PaySuccess,
+  },
+
+  {
+    path: "/center", // 用户中心
+    component: Center,
   },
 
   // 重定向

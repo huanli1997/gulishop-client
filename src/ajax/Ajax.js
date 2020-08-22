@@ -19,7 +19,17 @@ instance.interceptors.request.use((config) => {
   //把用户的临时身份标识添加到每次请求的请求头当中
   let userTempId = store.state.user.userTempId;
   config.headers.userTempId = userTempId;
-
+  /* 
+  userTempId
+    - 未登录状态下的用户身份识别标识(主要用来未登录时，添加购物车)
+  token
+    - 登录状态下的用户身份识别标识    
+  */
+  //用户登录后，后台会返回一个token，把用户的token添加到每次请求的请求头当中
+  let token = store.state.user.userInfo.token;
+  if (token) {
+    config.headers.token = token;
+  }
   // 进度条开始
   NProgress.start();
   return config;

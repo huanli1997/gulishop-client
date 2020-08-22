@@ -9,7 +9,7 @@ import TypeNav from "@/components/TypeNav";
 
 import "@/mock/mockServer"; // 引入mock，里面的代码会执行一遍
 
-import "@/api";
+// import "@/api";
 // import {reqCategoryList} from '@/api'
 // reqCategoryList()
 import SliderLoop from "@/components/SliderLoop";
@@ -18,7 +18,17 @@ import Pagination from "@/components/Pagination";
 
 import "swiper/css/swiper.css"; // 轮播图 css css文件不需要使用变量接收，直接引入
 
+import * as API from "@/api"; // 引入api所有，作为一个对象
+
+import { MessageBox, Message } from "element-ui";
+
 Vue.config.performance = false;
+
+// 注册使用，挂载到Vue原型对象上
+
+Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$alert = MessageBox.alert; // // 弹出的框，需要靠这个alert功能
+Vue.prototype.$message = Message;
 
 // 全局注册组件
 Vue.component("TypeNav", TypeNav);
@@ -39,5 +49,7 @@ new Vue({
   // template: "<App/>",
   beforeCreate() {
     Vue.prototype.$bus = this; // 设置全局事件总线
+    // 目的并不是以它作为事件总线，因为它没有办法使用$on和$emit，我们是为了让所有的组件都可以看见它
+    Vue.prototype.$API = API;
   },
 });

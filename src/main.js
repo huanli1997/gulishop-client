@@ -22,7 +22,7 @@ import * as API from "@/api"; // 引入api所有，作为一个对象
 
 import { MessageBox, Message, Pagination } from "element-ui";
 
-import VeeValidate from "vee-validate"; // 验证
+import "./validate"; // 验证
 
 // 引入并配置loading图片
 import VueLazyload from "vue-lazyload";
@@ -42,8 +42,6 @@ Vue.use(VueLazyload, {
   // 内部自定义了一个指令lazy
   loading, // 指定未加载得到图片之前的loading图片
 });
-
-Vue.use(VeeValidate);
 
 // 全局注册组件
 Vue.component("TypeNav", TypeNav);

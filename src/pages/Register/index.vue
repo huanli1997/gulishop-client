@@ -28,7 +28,7 @@
           v-model="code"
           name="code"
           placeholder="请输入验证码"
-          v-validate="{ required: true, regex: /^[0-9]*$ / }"
+          v-validate="{ required: true, regex: /^\d{4}$/ }"
           :class="{ invalid: errors.has('code') }"
         />
 
@@ -82,9 +82,15 @@
         <span class="error-msg">错误提示信息</span> -->
       </div>
       <div class="controls">
-        <input name="m1" type="checkbox" />
+        <input
+          type="checkbox"
+          v-model="isCheck"
+          name="isCheck"
+          v-validate="{ agree: true }"
+          :class="{ invalid: errors.has('isCheck') }"
+        />
         <span>同意协议并注册《尚品汇用户协议》</span>
-        <span class="error-msg">错误提示信息</span>
+        <span class="error-msg">{{ errors.first("isCheck") }}</span>
       </div>
       <div class="btn">
         <button @click="register">完成注册</button>
@@ -118,14 +124,18 @@ export default {
       code: "",
       password: "",
       password2: "",
+      isCheck: false,
     };
   },
   methods: {
     // 注册
     async register() {
+      //收集参数形成对象
       let { mobile, code, password, password2 } = this;
-      // 基础验证
-      if (mobile && code && password && password2 && password === password2) {
+
+      // 对所有表单项进行整体验证
+      const success = await this.$validator.validateAll();
+      if (success) {
         try {
           // 发送请求
           await this.$store.dispatch("register", { mobile, code, password });
@@ -135,6 +145,8 @@ export default {
         } catch (error) {
           alert(error.message);
         }
+      } else {
+        this.$message.warning("验证不通过");
       }
     },
 

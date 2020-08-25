@@ -108,10 +108,17 @@ export default [
       }
     },
   },
-
+  // 只有从交易页面（创建订单）页面才能跳转到支付页面
   {
     path: "/pay", // 支付页面
     component: Pay,
+    beforeEnter: (to, from, next) => {
+      if (from.path === "/trade") {
+        next();
+      } else {
+        next(false);
+      }
+    },
   },
 
   // 只有从支付页面才能跳转到支付成功页面

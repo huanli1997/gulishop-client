@@ -13,13 +13,18 @@ VeeValidate.Validator.localize("zh_CN", {
   },
   attributes: {
     // 给校验的field属性名映射中文名称
-    attributes: {
-      // 给校验的field属性名映射中文名称
-      phone: "手机号",
-      code: "验证码",
-      password: "密码",
-      password2: "确认密码",
-      isCheck: "协议",
-    },
+    phone: "手机号",
+    code: "验证码",
+    password: "密码",
+    password2: "确认密码",
+    isCheck: "协议",
   },
+});
+
+// 自定义验证规则
+VeeValidate.Validator.extend("agree", {
+  validate: (value) => {
+    return value;
+  },
+  getMessage: (field) => field + "必须同意",
 });

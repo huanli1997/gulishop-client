@@ -94,8 +94,14 @@ export default {
         try {
           // 发送请求
           await this.$store.dispatch("logon", { mobile, password });
-          alert("登录成功，自动跳转到首页");
-          this.$router.push("/");
+          alert("登录成功，自动跳转");
+          // 判断它是否被全局路由守卫拦截过，如果拦截过，那的登录后，跳至之前想去的页面
+          let redirectPath = this.$route.query.redirect;
+          if (redirectPath) {
+            this.$router.push(redirectPath);
+          } else {
+            this.$router.push("/");
+          }
         } catch (error) {
           alert(error.message);
         }

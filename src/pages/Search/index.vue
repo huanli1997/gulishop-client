@@ -110,7 +110,7 @@
                     /></a> -->
                     <!-- 使用路由跳转 -->
                     <router-link :to="`/detail/${goods.id}`"
-                      ><img :src="goods.defaultImg"
+                      ><img v-lazy="goods.defaultImg"
                     /></router-link>
                   </div>
                   <div class="price">
@@ -200,6 +200,8 @@ export default {
   // mounted 一般用来异步请求数据
   // beforeMount 一般用来同步处理数据（参数）
   beforeMount() {
+    // 把路由当中的keyword还有相关类别名称及类别id获取到，添加到searchParams搜索条件当中
+    // 如果有那么搜索条件当中就有了，如果没有那就是初始化参数
     // 更加用户操作，处理参数，去掉空数据
     // const { keyword } = this.$route.params;
     // const {
@@ -304,10 +306,11 @@ export default {
     // 移除removeTrademark面包屑
     removeTrademark() {
       this.searchParams.trademark = "";
-      this.getGoodsListInfo();
 
       // 搜索条件更新，需要当前页码修改为1
       this.searchParams.pageNo = 1;
+
+      this.getGoodsListInfo();
     },
     // 点击品牌，搜索
     searchForTrademark(trademark) {

@@ -154,3 +154,12 @@ export const reqOrderStatus = (orderId) => {
     method: "get",
   });
 };
+
+// 获取我的订单列表
+// /api/order/auth/{page}/{limit} GET
+export const reqMyOrderInfo = (page,limit) => {
+  return Ajax({
+    url: `/order/auth/${page}/${limit}`,
+    method: "get",
+  });
+};

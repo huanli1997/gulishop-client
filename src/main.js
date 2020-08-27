@@ -20,7 +20,8 @@ import "swiper/css/swiper.css"; // 轮播图 css css文件不需要使用变量�
 
 import * as API from "@/api"; // 引入api所有，作为一个对象
 
-import { MessageBox, Message, Pagination } from "element-ui";
+// import { MessageBox, Message, Button} from "element-ui";
+import { MessageBox, Message, Pagination , Button} from "element-ui";
 
 import "./validate"; // 验证
 
@@ -35,6 +36,8 @@ Vue.config.performance = false;
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert; // // 弹出的框，需要靠这个alert功能
 Vue.prototype.$message = Message;
+
+Vue.component(Button.name, Button) // <el-button>
 // 注册使用插件
 Vue.use(Pagination);
 
@@ -48,7 +51,7 @@ Vue.component("TypeNav", TypeNav);
 // 轮播图
 Vue.component("SliderLoop", SliderLoop);
 // 分页导航
-// Vue.component("Pagination", Pagination); 自己写的先注释掉 使用element-ui的
+// Vue.component("Pagination", Pagination); // 自己写的先注释掉 使用element-ui的
 
 // 组件：1.定义组件 2.注册 3使用
 new Vue({
